@@ -70,18 +70,3 @@ func main() {
 	fmt.Println("Server is running on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
-
-// package main
-
-// import (
-// 	"fmt"
-// 	"log"
-
-// 	"github.com/gofiber/fiber/v2"
-// )
-
-// func main() {
-// 	fmt.Println("h")
-// 	app := fiber.New()
-// 	log.Fatal(app.Listen(":4000"))
-// }

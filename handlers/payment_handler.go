@@ -5,42 +5,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/Edeeeem/Final_Progect/store"
-
 	"github.com/stripe/stripe-go/v74"
 	"github.com/stripe/stripe-go/v74/checkout/session"
 )
-
-// // func init() {
-// // 	// Initialize the Stripe API key
-// // 	stripe.Key = os.Getenv("sk_test_51PqLh600u1DnbQizLZTOJ0ddVJEwmXVXQvDR3okzQCq5WGt9kR4ywczehnhku13ei3AFR5iHr4ymj4yNDkbJeEDw00TezeW4wz")
-// // }
-
-// func init() {
-// 	key := os.Getenv("STRIPE_API_KEY")
-// 	if key == "sk_test_51PqLh600u1DnbQizLZTOJ0ddVJEwmXVXQvDR3okzQCq5WGt9kR4ywczehnhku13ei3AFR5iHr4ymj4yNDkbJeEDw00TezeW4wz" {
-// 		log.Fatal("Stripe API key is not set. Please set the STRIPE_API_KEY environment variable.")
-// 	}
-// 	stripe.Key = key
-// }
-
-// Set the necessary headers
-req.Header.Set("Authorization", "Bearer "+sk_test_51PqLh600u1DnbQizLZTOJ0ddVJEwmXVXQvDR3okzQCq5WGt9kR4ywczehnhku13ei3AFR5iHr4ymj4yNDkbJeEDw00TezeW4wz)
-req.Header.Set("Content-Type", "application/json")
-
-// Perform the HTTP request
-client := &http.Client{}
-resp, err := client.Do(req)
-if err != nil {
- fmt.Println("Error making request:", err)
- return
-}
-defer resp.Body.Close()
-
-// Read and print the response
-body, err := ioutil.ReadAll(resp.Body)
 
 // HandlePurchase creates a Stripe checkout session for a book
 func HandlePurchase(w http.ResponseWriter, r *http.Request) {
@@ -54,6 +23,7 @@ func HandlePurchase(w http.ResponseWriter, r *http.Request) {
 		BookID string `json:"book_id"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+		log.Println(err)
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
@@ -64,6 +34,9 @@ func HandlePurchase(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Book not found", http.StatusNotFound)
 		return
 	}
+
+	// Set Stripe API key
+	stripe.Key = "sk_test_51PqLh600u1DnbQizLZTOJ0ddVJEwmXVXQvDR3okzQCq5WGt9kR4ywczehnhku13ei3AFR5iHr4ymj4yNDkbJeEDw00TezeW4wz"
 
 	// Create a Stripe checkout session
 	sessionParams := &stripe.CheckoutSessionParams{
